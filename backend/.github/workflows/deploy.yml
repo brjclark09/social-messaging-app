@@ -1,0 +1,46 @@
+name: Deploy to Remote Server
+
+on:
+  push:
+    branches:
+      - main # main OR master ???
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SERVER_IP: "165.128.1.17"
+      CPANEL_USERNAME: "bclark"
+      PROJECT_FOLDER: "/home/bclark/api-final-project2" #ex: /home/someuser/api-final-project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up SSH key for remote server
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      
+      - name: Add server to known hosts
+        run: |
+          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+      
+      - name: Test SSH connection
+        run: |
+          ssh -o ConnectTimeout=10 $CPANEL_USERNAME@$SERVER_IP "echo 'SSH test successful'"
+
+      - name: Copy files to remote server
+        run: bash deploy.sh
+      
+      - name: Stop application
+        run: |
+          ssh ${{ env.CPANEL_USERNAME }}@${{ env.SERVER_IP }} "cloudlinux-selector stop --json --interpreter nodejs --user ${{ env.CPANEL_USERNAME }} --app-root ${{ env.PROJECT_FOLDER }}"
+
+      - name: Install modules
+        run: |
+          ssh ${{ env.CPANEL_USERNAME }}@${{ env.SERVER_IP }} "cloudlinux-selector install-modules --json --interpreter nodejs --user ${{ env.CPANEL_USERNAME }} --app-root ${{ env.PROJECT_FOLDER }}"
+
+      - name: Start application
+        run: |
+          ssh ${{ env.CPANEL_USERNAME }}@${{ env.SERVER_IP }} "cloudlinux-selector start --json --interpreter nodejs --user ${{ env.CPANEL_USERNAME }} --app-root ${{ env.PROJECT_FOLDER }}"
