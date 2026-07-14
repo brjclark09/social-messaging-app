@@ -1,13 +1,13 @@
 # Parent-Focused Social Messaging Platform
 
-A full-stack school project built to demonstrate practical experience with web application architecture, REST API development, authentication, relational databases, and automated backend testing.
+A full-stack school portfolio project that I continued expanding after the course that's built to demonstrate practical experience with web and mobile application architecture, REST API development, authentication, relational databases, and automated backend testing.
 
 The parent-focused messaging concept provided a realistic domain for implementing user accounts, permissions, communication, preferences, and activity logging. This repository is presented as a portfolio project rather than a production-ready parental-control platform.
 
 ## Technology Stack
 
 **Frontend**
-- React
+- React Native
 - JavaScript
 - HTML
 - CSS
@@ -39,7 +39,7 @@ The parent-focused messaging concept provided a realistic domain for implementin
 The application uses a separated client-server architecture:
 
 ```text
-React Frontend
+React Native Frontend
       |
       | HTTP requests and JSON responses
       v
@@ -55,7 +55,7 @@ This structure separates presentation, application logic, and data persistence, 
 
 ## Technical Implementation
 
-The React frontend manages interface state, form input, and communication with the backend.
+The React Native frontend manages interface state, form input, and communication with the backend.
 
 The Express backend provides resource-based API routes for:
 
@@ -130,7 +130,7 @@ These tests verify API behavior without requiring manual browser testing and pro
 ## Skills Demonstrated
 
 - Full-stack JavaScript development
-- React frontend development
+- React Native frontend development
 - Node.js and Express backend development
 - REST API design
 - MySQL database design
